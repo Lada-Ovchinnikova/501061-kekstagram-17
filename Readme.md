@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Лада Овчинникова](https://up.htmlacademy.ru/javascript/17/user/501061).
-* Наставник: `Денис Выхрыстюк`.
+* Наставник: [Денис Выхрыстюк](https://htmlacademy.ru/profile/id568747).
 
 ---
 
