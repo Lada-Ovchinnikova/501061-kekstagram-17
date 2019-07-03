@@ -9,7 +9,7 @@ var allMessages = ['Всё отлично!',
 ];
 var allAuthors = ['Мурзик', 'Светик', 'Банан', 'Леопольд', 'Андромеда', 'Тыковка'];
 var allAvatars = ['img/avatar-1.svg', 'img/avatar-2.svg', 'img/avatar-3.svg', 'img/avatar-4.svg', 'img/avatar-5.svg', 'img/avatar-6.svg'];
-var picturesAmmount = 25;
+var picturesAmount = 25;
 
 // Генерирует случайное число
 var getRandom = function (items) {
@@ -17,44 +17,31 @@ var getRandom = function (items) {
 };
 
 // Генерирует случайное число в диапазоне от .. до ..
-var getRandomOfDiapazon = function (min, max) {
+var getRandomRange = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// Генерирует числа от .. до ..
-for (var i = 0, ar = []; i < picturesAmmount; i++) {
-  ar[i] = i + 1;
-}
-
 // Создает коментарий
 var creatComment = function () {
-  var singleComment = {
+  return {
     avatar: getRandom(allAvatars),
     message: getRandom(allMessages),
-    author: getRandom(allAuthors)};
-
-  return singleComment;
+    author: getRandom(allAuthors),
+  };
 };
-
-// Создает массив комментариев и добавляет в него данные
-var comments = [];
-for (i = 0; i < comments.length; i++) {
-  comments.push(creatComment());
-}
 
 // Создает фото
 var creatPicture = function () {
-  var singlePicture = {
-    url: 'photos/' + ar.pop() + '.jpg',
-    likes: getRandomOfDiapazon(15, 255),
-    comments: comments.length};
-
-  return singlePicture;
+  return {
+    url: 'photos/' + (i + 1) + '.jpg',
+    likes: getRandomRange(15, 255),
+    comments: [creatComment(), creatComment()],
+  };
 };
 
 // Добавляет фото в массив
 var allPictures = [];
-for (i = 0; i < picturesAmmount; i++) {
+for (var i = 0; i < picturesAmount; i++) {
   allPictures.push(creatPicture());
 }
 
