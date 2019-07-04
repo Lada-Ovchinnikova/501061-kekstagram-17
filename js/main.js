@@ -22,7 +22,7 @@ var getRandomRange = function (min, max) {
 };
 
 // Создает коментарий
-var creatComment = function () {
+var createComment = function () {
   return {
     avatar: getRandom(allAvatars),
     message: getRandom(allMessages),
@@ -31,18 +31,18 @@ var creatComment = function () {
 };
 
 // Создает фото
-var creatPicture = function () {
+var createPicture = function (index) {
   return {
-    url: 'photos/' + (i + 1) + '.jpg',
+    url: 'photos/' + (index + 1) + '.jpg',
     likes: getRandomRange(15, 255),
-    comments: [creatComment(), creatComment()],
+    comments: [createComment(), createComment()],
   };
 };
 
 // Добавляет фото в массив
 var allPictures = [];
 for (var i = 0; i < picturesAmount; i++) {
-  allPictures.push(creatPicture());
+  allPictures.push(createPicture(i));
 }
 
 // Находит элемент в который добавляются фотографии
@@ -59,7 +59,7 @@ var renderPicture = function (picture) {
 
   pictureElement.querySelector('.picture__img').src = picture.url;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-  pictureElement.querySelector('.picture__comments').textContent = picture.comments;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
 
   return pictureElement;
 };
