@@ -70,3 +70,52 @@ for (i = 0; i < allPictures.length; i++) {
   fragment.appendChild(renderPicture(allPictures[i]));
 }
 similarListElement.appendChild(fragment);
+
+var ESC_KEYCODE = 27;
+
+// Находит элементы модального окна
+var uploadFileButton = document.querySelector('#upload-file');
+var pictureForm = document.querySelector('.img-upload__overlay');
+var pictureFormCloseButton = document.querySelector('#upload-cancel');
+
+// Находит элементы ползунка
+var sliderPin = document.querySelector('.effect-level__pin');
+var sliderLine = document.querySelector('.effect-level__line');
+
+// Обработчик закрытия по esc
+var onFormEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeForm();
+  }
+};
+
+// Открывает модальное окно
+var openForm = function () {
+  pictureForm.classList.remove('hidden');
+  document.addEventListener('keydown', onFormEscPress);
+};
+
+// Закрывает модальное окно
+var closeForm = function () {
+  pictureForm.classList.add('hidden');
+  document.removeEventListener('keydown', onFormEscPress);
+};
+
+// Обработчик  закрытия модального окна
+pictureFormCloseButton.addEventListener('click', function () {
+  closeForm();
+});
+
+// обработчик открытия модального окна
+uploadFileButton.addEventListener('change', function () {
+  openForm();
+});
+
+// Обработчик события mouseup
+sliderPin.addEventListener('mouseup', function () {
+});
+
+// Определяет уровень насыщенности эффекта
+var getEffectValue = function () {
+  return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
+};
