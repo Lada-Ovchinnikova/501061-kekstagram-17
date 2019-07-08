@@ -97,6 +97,7 @@ var openForm = function () {
 
 // Закрывает модальное окно
 var closeForm = function () {
+// uploadFileButton.reset();
   pictureForm.classList.add('hidden');
   document.removeEventListener('keydown', onFormEscPress);
 };
@@ -106,16 +107,17 @@ pictureFormCloseButton.addEventListener('click', function () {
   closeForm();
 });
 
-// обработчик открытия модального окна
+// Обработчик открытия модального окна
 uploadFileButton.addEventListener('change', function () {
   openForm();
-});
-
-// Обработчик события mouseup
-sliderPin.addEventListener('mouseup', function () {
 });
 
 // Определяет уровень насыщенности эффекта
 var getEffectValue = function () {
   return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
 };
+
+// Обработчик события mouseup
+sliderPin.addEventListener('mouseup', function () {
+  getEffectValue();
+});
