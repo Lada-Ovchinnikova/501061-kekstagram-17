@@ -78,9 +78,6 @@ var uploadFileButton = document.querySelector('#upload-file');
 var pictureForm = document.querySelector('.img-upload__overlay');
 var pictureFormCloseButton = document.querySelector('#upload-cancel');
 
-// Находит элементы ползунка
-var sliderPin = document.querySelector('.effect-level__pin');
-var sliderLine = document.querySelector('.effect-level__line');
 
 // Обработчик закрытия по esc
 var onFormEscPress = function (evt) {
@@ -97,7 +94,6 @@ var openForm = function () {
 
 // Закрывает модальное окно
 var closeForm = function () {
-// uploadFileButton.reset();
   pictureForm.classList.add('hidden');
   document.removeEventListener('keydown', onFormEscPress);
 };
@@ -112,12 +108,50 @@ uploadFileButton.addEventListener('change', function () {
   openForm();
 });
 
-// Определяет уровень насыщенности эффекта
+// Находит эл-ты формы редактирования
+var previewPicture = document.querySelector('.img-upload__preview');
+var effectsList = document.querySelector('.effects__list');
+var sliderLine = document.querySelector('.effect-level__line');
+var slider = document.querySelector('.effect-level');
+var filter = {
+  none: function () {
+    return 'none';
+  },
+  chrome: function (value) {
+    return 'grayscale' + '(' + value + '%)';
+  },
+  sepia: function (value) {
+    return 'sepia' + '(' + value + '%)';
+  },
+  marvin: function (value) {
+    return 'invert' + '(' + value + '%)';
+  },
+  phobos: function (value) {
+    return 'blur' + '(' + value * 3 / 100 + 'px)';
+  },
+  heat: function (value) {
+    return 'brigthness' + '(' + value + '%)';
+  }
+};
+
+// Нажодит значение уровня фильтра
 var getEffectValue = function () {
   return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
 };
 
-// Обработчик события mouseup
+var setFilter = null;
+effectsList.addEventListener('change', function (evt) {
+  if (evt.target.value !== 'none') {
+    slider.classList.remove('hidden');
+  } else {
+    slider.classList.add('hidden');
+  }
+  setFilter = filter[evt.target.value];
+  previewPicture.style.filter = filter[evt.target.value](100);
+});
+
+var sliderPin = document.querySelector('.effect-level__pin');
+
 sliderPin.addEventListener('mouseup', function () {
-  getEffectValue();
+  previewPicture.style.filter = setFilter(getEffectValue());
 });
