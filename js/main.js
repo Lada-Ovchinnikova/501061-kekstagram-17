@@ -130,7 +130,7 @@ var filter = {
     return 'blur' + '(' + value * 3 / 100 + 'px)';
   },
   heat: function (value) {
-    return 'brigthness' + '(' + value + '%)';
+    return 'brightness' + '(' + value * 3 + '%)';
   }
 };
 
@@ -154,4 +154,17 @@ var sliderPin = document.querySelector('.effect-level__pin');
 
 sliderPin.addEventListener('mouseup', function () {
   previewPicture.style.filter = setFilter(getEffectValue());
+});
+
+// Находит элемент с комментарием
+var commentText = document.querySelector('.text__description');
+
+// Обработчик события фокус
+commentText.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onFormEscPress);
+});
+
+// Обработчик события снятие фокуса
+commentText.addEventListener('blur', function () {
+  document.addEventListener('keydown', onFormEscPress);
 });
