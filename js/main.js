@@ -70,3 +70,88 @@ for (i = 0; i < allPictures.length; i++) {
   fragment.appendChild(renderPicture(allPictures[i]));
 }
 similarListElement.appendChild(fragment);
+
+var ESC_KEYCODE = 27;
+
+// Находит элементы модального окна
+var uploadFileButton = document.querySelector('#upload-file');
+var pictureForm = document.querySelector('.img-upload__overlay');
+var pictureFormCloseButton = document.querySelector('#upload-cancel');
+
+
+// Обработчик закрытия по esc
+var onFormEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeForm();
+  }
+};
+
+// Открывает модальное окно
+var openForm = function () {
+  pictureForm.classList.remove('hidden');
+  document.addEventListener('keydown', onFormEscPress);
+};
+
+// Закрывает модальное окно
+var closeForm = function () {
+  pictureForm.classList.add('hidden');
+  document.removeEventListener('keydown', onFormEscPress);
+};
+
+// Обработчик  закрытия модального окна
+pictureFormCloseButton.addEventListener('click', function () {
+  closeForm();
+});
+
+// Обработчик открытия модального окна
+uploadFileButton.addEventListener('change', function () {
+  openForm();
+});
+
+// Находит эл-ты формы редактирования
+var previewPicture = document.querySelector('.img-upload__preview');
+var effectsList = document.querySelector('.effects__list');
+var sliderLine = document.querySelector('.effect-level__line');
+var slider = document.querySelector('.effect-level');
+var filter = {
+  none: function () {
+    return 'none';
+  },
+  chrome: function (value) {
+    return 'grayscale' + '(' + value + '%)';
+  },
+  sepia: function (value) {
+    return 'sepia' + '(' + value + '%)';
+  },
+  marvin: function (value) {
+    return 'invert' + '(' + value + '%)';
+  },
+  phobos: function (value) {
+    return 'blur' + '(' + value * 3 / 100 + 'px)';
+  },
+  heat: function (value) {
+    return 'brigthness' + '(' + value + '%)';
+  }
+};
+
+// Нажодит значение уровня фильтра
+var getEffectValue = function () {
+  return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
+};
+
+var setFilter = null;
+effectsList.addEventListener('change', function (evt) {
+  if (evt.target.value !== 'none') {
+    slider.classList.remove('hidden');
+  } else {
+    slider.classList.add('hidden');
+  }
+  setFilter = filter[evt.target.value];
+  previewPicture.style.filter = filter[evt.target.value](100);
+});
+
+var sliderPin = document.querySelector('.effect-level__pin');
+
+sliderPin.addEventListener('mouseup', function () {
+  previewPicture.style.filter = setFilter(getEffectValue());
+});
