@@ -112,9 +112,9 @@ uploadFileButton.addEventListener('change', function () {
 
 // Находит элемент с комментарием
 var commentText = document.querySelector('.text__description');
-commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
-var checkComment = function () {
 
+// Проверяет на валидность
+var checkComment = function () {
   if (commentText.value.length < 140) {
     commentText.setCustomValidity('');
     return true;
@@ -128,9 +128,16 @@ var checkComment = function () {
 var getValidation = function () {
   return checkComment();
 };
-// Находит форму
+// Находит форму и кнопку отправки
 var form = document.querySelector('.img-upload__form');
+var submitButton = document.querySelector('#upload-submit');
 
+// Обработчик клика по кнопке
+submitButton.addEventListener('click', function () {
+  getValidation();
+});
+
+// Обработчик отправки формы
 form.addEventListener('submit', function (evt) {
   if (!getValidation()) {
     evt.preventDefault();
