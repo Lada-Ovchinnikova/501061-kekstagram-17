@@ -187,11 +187,16 @@ var getEffectValue = function () {
   return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
 };
 
+var valueEffect = document.querySelector('.effect-level__value');
+
 // Задает значение фильтра
 var setFilter = null;
 effectsList.addEventListener('change', function (evt) {
   if (evt.target.value !== 'none') {
     slider.classList.remove('hidden');
+    sliderPin.style.left = 100 + '%';
+    effectDepthLine.style.width = 100 + '%';
+    valueEffect.value = 100;
   } else {
     slider.classList.add('hidden');
   }
@@ -199,6 +204,56 @@ effectsList.addEventListener('change', function (evt) {
   previewPicture.style.filter = filter[evt.target.value](100);
 });
 
-sliderPin.addEventListener('mouseup', function () {
-  previewPicture.style.filter = setFilter(getEffectValue());
+// Находит полосу глубины эффекта
+var effectDepthLine = document.querySelector('.effect-level__depth');
+
+// Находит ширину (яркой желтой) полосы глубины эффекта
+var getEffectDepthLineWidth = function () {
+  return Math.round(sliderPin.offsetLeft + sliderPin.clientWidth / 2) + 'px';
+};
+
+
+sliderPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+  };
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+    };
+    // Считает смещение
+    var setPosition = function () {
+      var position = sliderPin.offsetLeft - shift.x;
+      if (position > 0 && position < sliderLine.clientWidth) {
+        return position + 'px';
+      }
+      return position;
+    };
+    // Задает смещение пина
+    sliderPin.style.left = setPosition();
+    // Задает фильтр
+    previewPicture.style.filter = setFilter(getEffectValue());
+    // Считает ширину полосы глубины эффекта
+    effectDepthLine.style.width = getEffectDepthLineWidth();
+    // Задает значение глубины эффекта
+    valueEffect.value = getEffectValue();
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    previewPicture.style.filter = setFilter(getEffectValue());
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 });
