@@ -86,6 +86,7 @@ var onFormEscPress = function (evt) {
   }
 };
 
+
 // Открывает модальное окно
 var openForm = function () {
   pictureForm.classList.remove('hidden');
@@ -106,13 +107,60 @@ pictureFormCloseButton.addEventListener('click', function () {
 // Обработчик открытия модального окна
 uploadFileButton.addEventListener('change', function () {
   openForm();
+
 });
+
+// Находит элемент с комментарием
+var commentText = document.querySelector('.text__description');
+
+// Проверяет на валидность
+var checkComment = function () {
+  if (commentText.value.length < 140) {
+    commentText.setCustomValidity('');
+    return true;
+  } else {
+    commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
+    commentText.style.border = 'solid 3px rgb(255, 0, 0)';
+    return false;
+  }
+};
+
+var getValidation = function () {
+  return checkComment();
+};
+// Находит форму и кнопку отправки
+var form = document.querySelector('.img-upload__form');
+var submitButton = document.querySelector('#upload-submit');
+
+// Обработчик клика по кнопке
+submitButton.addEventListener('click', function () {
+  getValidation();
+});
+
+// Обработчик отправки формы
+form.addEventListener('submit', function (evt) {
+  if (!getValidation()) {
+    evt.preventDefault();
+  }
+});
+
+// Обработчик события фокус
+commentText.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onFormEscPress);
+});
+
+// Обработчик события снятие фокуса
+commentText.addEventListener('blur', function () {
+  document.addEventListener('keydown', onFormEscPress);
+});
+
 
 // Находит эл-ты формы редактирования
 var previewPicture = document.querySelector('.img-upload__preview');
 var effectsList = document.querySelector('.effects__list');
 var sliderLine = document.querySelector('.effect-level__line');
 var slider = document.querySelector('.effect-level');
+var sliderPin = document.querySelector('.effect-level__pin');
 var filter = {
   none: function () {
     return 'none';
@@ -130,15 +178,16 @@ var filter = {
     return 'blur' + '(' + value * 3 / 100 + 'px)';
   },
   heat: function (value) {
-    return 'brigthness' + '(' + value + '%)';
+    return 'brightness' + '(' + value * 3 + '%)';
   }
 };
 
-// Нажодит значение уровня фильтра
+// Находит значение уровня фильтра
 var getEffectValue = function () {
   return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
 };
 
+// Задает значение фильтра
 var setFilter = null;
 effectsList.addEventListener('change', function (evt) {
   if (evt.target.value !== 'none') {
@@ -149,8 +198,6 @@ effectsList.addEventListener('change', function (evt) {
   setFilter = filter[evt.target.value];
   previewPicture.style.filter = filter[evt.target.value](100);
 });
-
-var sliderPin = document.querySelector('.effect-level__pin');
 
 sliderPin.addEventListener('mouseup', function () {
   previewPicture.style.filter = setFilter(getEffectValue());
