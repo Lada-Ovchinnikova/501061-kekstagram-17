@@ -86,6 +86,7 @@ var onFormEscPress = function (evt) {
   }
 };
 
+
 // Открывает модальное окно
 var openForm = function () {
   pictureForm.classList.remove('hidden');
@@ -106,13 +107,49 @@ pictureFormCloseButton.addEventListener('click', function () {
 // Обработчик открытия модального окна
 uploadFileButton.addEventListener('change', function () {
   openForm();
+
 });
+
+// Находит элемент с комментарием
+var commentText = document.querySelector('.text__description');
+
+var checkComment = function () {
+  if (commentText.validity.tooLong) {
+    commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
+    commentText.style.border = 'solid 3px rgb(255, 0, 0)';
+    return false;
+  } else {
+    commentText.setCustomValidity('');
+    return true;
+  }
+};
+
+// Находит форму
+var form = document.querySelector('.img-upload__form');
+
+form.addEventListener('submit', function (evt) {
+  if (!checkComment()) {
+    evt.preventDefault();
+  }
+});
+
+// Обработчик события фокус
+commentText.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onFormEscPress);
+});
+
+// Обработчик события снятие фокуса
+commentText.addEventListener('blur', function () {
+  document.addEventListener('keydown', onFormEscPress);
+});
+
 
 // Находит эл-ты формы редактирования
 var previewPicture = document.querySelector('.img-upload__preview');
 var effectsList = document.querySelector('.effects__list');
 var sliderLine = document.querySelector('.effect-level__line');
 var slider = document.querySelector('.effect-level');
+var sliderPin = document.querySelector('.effect-level__pin');
 var filter = {
   none: function () {
     return 'none';
@@ -134,11 +171,12 @@ var filter = {
   }
 };
 
-// Нажодит значение уровня фильтра
+// Находит значение уровня фильтра
 var getEffectValue = function () {
   return Math.round(sliderPin.offsetLeft * 100 / sliderLine.clientWidth);
 };
 
+// Задает значение фильтра
 var setFilter = null;
 effectsList.addEventListener('change', function (evt) {
   if (evt.target.value !== 'none') {
@@ -150,21 +188,6 @@ effectsList.addEventListener('change', function (evt) {
   previewPicture.style.filter = filter[evt.target.value](100);
 });
 
-var sliderPin = document.querySelector('.effect-level__pin');
-
 sliderPin.addEventListener('mouseup', function () {
   previewPicture.style.filter = setFilter(getEffectValue());
-});
-
-// Находит элемент с комментарием
-var commentText = document.querySelector('.text__description');
-
-// Обработчик события фокус
-commentText.addEventListener('focus', function () {
-  document.removeEventListener('keydown', onFormEscPress);
-});
-
-// Обработчик события снятие фокуса
-commentText.addEventListener('blur', function () {
-  document.addEventListener('keydown', onFormEscPress);
 });
