@@ -112,23 +112,27 @@ uploadFileButton.addEventListener('change', function () {
 
 // Находит элемент с комментарием
 var commentText = document.querySelector('.text__description');
-
+commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
 var checkComment = function () {
-  if (commentText.validity.tooLong) {
+
+  if (commentText.value.length < 140) {
+    commentText.setCustomValidity('');
+    return true;
+  } else {
     commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
     commentText.style.border = 'solid 3px rgb(255, 0, 0)';
     return false;
-  } else {
-    commentText.setCustomValidity('');
-    return true;
   }
 };
 
+var getValidation = function () {
+  return checkComment();
+};
 // Находит форму
 var form = document.querySelector('.img-upload__form');
 
 form.addEventListener('submit', function (evt) {
-  if (!checkComment()) {
+  if (!getValidation()) {
     evt.preventDefault();
   }
 });
