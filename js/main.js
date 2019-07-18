@@ -209,7 +209,7 @@ var effectDepthLine = document.querySelector('.effect-level__depth');
 
 // Находит ширину (яркой желтой) полосы глубины эффекта
 var getEffectDepthLineWidth = function () {
-  return Math.round(sliderPin.offsetLeft + sliderPin.clientWidth / 2) + 'px';
+  return Math.round(sliderPin.offsetLeft) + 'px';
 };
 
 
@@ -231,14 +231,15 @@ sliderPin.addEventListener('mousedown', function (evt) {
     };
     // Считает смещение
     var setPosition = function () {
-      var position = sliderPin.offsetLeft - shift.x;
-      if (position > 0 && position < sliderLine.clientWidth) {
-        return position + 'px';
+      if ((sliderPin.offsetLeft - shift.x) > (sliderLine.clientWidth)) {
+        return sliderLine.clientWidth;
+      } else if ((sliderPin.offsetLeft - shift.x) < 0) {
+        return 0;
       }
-      return position;
+      return (sliderPin.offsetLeft - shift.x);
     };
     // Задает смещение пина
-    sliderPin.style.left = setPosition();
+    sliderPin.style.left = setPosition() + 'px';
     // Задает фильтр
     previewPicture.style.filter = setFilter(getEffectValue());
     // Считает ширину полосы глубины эффекта
