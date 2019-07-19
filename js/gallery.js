@@ -5,7 +5,7 @@
   // Добавляет фото в массив
   var allPictures = [];
   for (var i = 0; i < picturesAmount; i++) {
-    allPictures.push(window.createPicture(i));
+    allPictures.push(window.data.createPicture(i));
   }
 
   // Находит элемент в который добавляются фотографии

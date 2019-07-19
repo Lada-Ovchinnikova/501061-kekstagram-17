@@ -8,22 +8,24 @@
   var pictureFormCloseButton = document.querySelector('#upload-cancel');
 
   // Обработчик закрытия по esc
-  window.onFormEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      closeForm();
+  window.modal = {
+    onFormEscPress: function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeForm();
+      }
     }
   };
 
   // Открывает модальное окно
   var openForm = function () {
     pictureForm.classList.remove('hidden');
-    document.addEventListener('keydown', window.onFormEscPress);
+    document.addEventListener('keydown', window.modal.onFormEscPress);
   };
 
   // Закрывает модальное окно
   var closeForm = function () {
     pictureForm.classList.add('hidden');
-    document.removeEventListener('keydown', window.onFormEscPress);
+    document.removeEventListener('keydown', window.modal.onFormEscPress);
   };
 
   // Обработчик  закрытия модального окна

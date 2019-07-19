@@ -110,12 +110,12 @@
 
   // Обработчик события фокус
   commentText.addEventListener('focus', function () {
-    document.removeEventListener('keydown', window.onFormEscPress);
+    document.removeEventListener('keydown', window.modal.onFormEscPress);
   });
 
   // Обработчик события снятие фокуса
   commentText.addEventListener('blur', function () {
-    document.addEventListener('keydown', window.onFormEscPress);
+    document.addEventListener('keydown', window.modal.onFormEscPress);
   });
 
   // Проверяет на валидность

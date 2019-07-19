@@ -32,12 +32,14 @@
   };
 
   // Создает фото
-  window.createPicture = function (index) {
-    return {
-      url: 'photos/' + (index + 1) + '.jpg',
-      likes: getRandomRange(15, 255),
-      comments: [createComment(), createComment()],
-    };
+  window.data = {
+    createPicture: function (index) {
+      return {
+        url: 'photos/' + (index + 1) + '.jpg',
+        likes: getRandomRange(15, 255),
+        comments: [createComment(), createComment()],
+      }
+    }
   };
 })();
 
