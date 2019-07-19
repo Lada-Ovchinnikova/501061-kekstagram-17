@@ -38,7 +38,7 @@
         url: 'photos/' + (index + 1) + '.jpg',
         likes: getRandomRange(15, 255),
         comments: [createComment(), createComment()],
-      }
+      };
     }
   };
 })();
