@@ -1,12 +1,5 @@
 'use strict';
 (function () {
-  var picturesAmount = 25;
-
-  // Добавляет фото в массив
-  var allPictures = [];
-  for (var i = 0; i < picturesAmount; i++) {
-    allPictures.push(window.data.createPicture(i));
-  }
 
   // Находит элемент в который добавляются фотографии
   var similarListElement = document.querySelector('.pictures');
@@ -26,11 +19,15 @@
 
     return pictureElement;
   };
+  window.load(function (allPictures) {
+    // Хранит и добавляет данные из шаблона
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < 25; i++) {
+      fragment.appendChild(renderPicture(allPictures[i]));
+    }
+    similarListElement.appendChild(fragment);
+  });
 
-  // Хранит и добавляет данные из шаблона
-  var fragment = document.createDocumentFragment();
-  for (i = 0; i < allPictures.length; i++) {
-    fragment.appendChild(renderPicture(allPictures[i]));
-  }
-  similarListElement.appendChild(fragment);
 })();
+
+
