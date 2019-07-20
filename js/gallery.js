@@ -19,15 +19,31 @@
 
     return pictureElement;
   };
-  window.load(function (allPictures) {
+
+  var onSuccess = function (allPictures) {
     // Хранит и добавляет данные из шаблона
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < 25; i++) {
       fragment.appendChild(renderPicture(allPictures[i]));
     }
     similarListElement.appendChild(fragment);
-  });
+  };
 
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: grey;';
+    node.style.position = 'absolute';
+    node.style.top = '10px';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '20px';
+    node.style.width = '400px';
+    node.style.height = '25px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+  window.data(onSuccess, onError);
 })();
 
 

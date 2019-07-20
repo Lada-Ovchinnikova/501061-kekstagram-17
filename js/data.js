@@ -1,18 +1,21 @@
 'use strict';
 (function () {
 
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL = 'https://js.dump.academy/kekstagram/datjja';
 
-  window.load = function (onSuccess) {
+  window.data = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    xhr.open('GET', URL);
-
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
+      } else {
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
+    xhr.open('GET', URL);
     xhr.send();
   };
 
