@@ -1,12 +1,5 @@
 'use strict';
 (function () {
-  var picturesAmount = 25;
-
-  // Добавляет фото в массив
-  var allPictures = [];
-  for (var i = 0; i < picturesAmount; i++) {
-    allPictures.push(window.data.createPicture(i));
-  }
 
   // Находит элемент в который добавляются фотографии
   var similarListElement = document.querySelector('.pictures');
@@ -27,10 +20,29 @@
     return pictureElement;
   };
 
-  // Хранит и добавляет данные из шаблона
-  var fragment = document.createDocumentFragment();
-  for (i = 0; i < allPictures.length; i++) {
-    fragment.appendChild(renderPicture(allPictures[i]));
-  }
-  similarListElement.appendChild(fragment);
+  var onLoadSuccess = function (allPictures) {
+    // Хранит и добавляет данные из шаблона
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < 25; i++) {
+      fragment.appendChild(renderPicture(allPictures[i]));
+    }
+    similarListElement.appendChild(fragment);
+  };
+
+  var onLoadError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.top = '10px';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '20px';
+    node.style.height = '25px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+  window.data.loadPhotos(onLoadSuccess, onLoadError);
 })();
+
+
