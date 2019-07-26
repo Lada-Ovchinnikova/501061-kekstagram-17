@@ -17,14 +17,14 @@
     var copiedArray = window.picture.data.slice();
     var newArray = [];
     for (var i = 0; i < 10; i++) {
-      var rand = Math.floor(Math.random() * copyaaray.length);
+      var rand = Math.floor(Math.random() * copiedArray.length);
       console.log(rand);
       var element = copiedArray.splice(rand, 1);
       console.log(element);
       newArray.push(element);
     }
 
-    window.picture.renderPictures(newArray;
+    window.picture.renderPictures(newArray);
   };
 
   var getPopPictures = function () {
