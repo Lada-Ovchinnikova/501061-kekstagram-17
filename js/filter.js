@@ -6,41 +6,52 @@
     return Math.random() - 0.5;
   };
 
-  var getDiscPict = function () {
-    window.picture.renderPictures(window.picture.data.slice().sort(function (first, second) {
+  var getDiscPictures = function () {
+    var sortedPictures = window.picture.data.sort(function (first, second) {
       return second.comments.length - first.comments.length;
-    }));
+    });
+    window.picture.renderPictures(sortedPictures);
   };
 
-  var getTenPict = function () {
-    window.picture.renderPictures(window.picture.data.slice().sort(compareRandom).slice(0, 10));
+  var getTenPictures = function () {
+    var copiedArray = window.picture.data.slice();
+    var newArray = [];
+    for (var i = 0; i < 10; i++) {
+      var rand = Math.floor(Math.random() * copyaaray.length);
+      console.log(rand);
+      var element = copiedArray.splice(rand, 1);
+      console.log(element);
+      newArray.push(element);
+    }
+
+    window.picture.renderPictures(newArray;
   };
 
-  var getPopPict = function () {
-    window.picture.renderPictures(window.picture.data.slice());
+  var getPopPictures = function () {
+    window.picture.renderPictures(window.picture.data);
   };
 
   var selectedElement = filterPopular;
 
   var setButtonColor = function (activeElement) {
-    if (selectedElement) {
-      selectedElement.classList.remove('img-filters__button--active');
-    }
+    selectedElement.classList.remove('img-filters__button--active');
     selectedElement = activeElement;
     selectedElement.classList.add('img-filters__button--active');
   };
 
+
   filterForm.addEventListener('click', function (evt) {
+
     setButtonColor(evt.target);
     switch (evt.target.id) {
       case 'filter-discussed':
-        window.debounce(getDiscPict);
+        window.debounce(getDiscPictures);
         break;
       case 'filter-new' :
-        window.debounce(getTenPict);
+        window.debounce(getTenPictures);
         break;
       case 'filter-popular' :
-        window.debounce(getPopPict);
+        window.debounce(getPopPictures);
         break;
     }
   });

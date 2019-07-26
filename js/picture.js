@@ -16,21 +16,11 @@
     return pictureElement;
   };
 
-  // var removePictures = function () {
-  //   window.picture.data.length = 0;
-  // };
-
-  // while (window.picture.data.length > 0) {
-  //   window.picture.data.pop();
-  // }
-
-  // .innerHTML = '';
-
   var imageFilters = document.querySelector('.img-filters');
   imageFilters.classList.remove('img-filters--inactive');
-  var render = function (data) {
-    // removePictures();
 
+
+  var render = function (data) {
     // Хранит и добавляет данные из шаблона
     var takeNumber = data.length > 25 ? 25 : data.length;
 
