@@ -16,10 +16,6 @@
     return pictureElement;
   };
 
-  var imageFilters = document.querySelector('.img-filters');
-  imageFilters.classList.remove('img-filters--inactive');
-
-
   var render = function (data) {
     // Хранит и добавляет данные из шаблона
     var takeNumber = data.length > 25 ? 25 : data.length;
@@ -28,7 +24,6 @@
       similarListElement.appendChild(renderPicture(data[i]));
     }
   };
-
 
   window.picture.renderPictures = render;
   // window.picture.removePictures = removePictures;

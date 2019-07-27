@@ -2,37 +2,31 @@
 (function () {
   var filterForm = document.querySelector('.img-filters__form');
   var filterPopular = document.querySelector('#filter-popular');
-  var compareRandom = function () {
-    return Math.random() - 0.5;
-  };
 
-  var getDiscPictures = function () {
-    var sortedPictures = window.picture.data.sort(function (first, second) {
+  var getDiscussedPictures = function () {
+    var sortedPictures = window.picture.data.slice().sort(function (first, second) {
       return second.comments.length - first.comments.length;
     });
     window.picture.renderPictures(sortedPictures);
   };
 
-  var getTenPictures = function () {
+  var getNewPictures = function () {
     var copiedArray = window.picture.data.slice();
-    var newArray = [];
+    var sortedPictures = [];
     for (var i = 0; i < 10; i++) {
-      var rand = Math.floor(Math.random() * copiedArray.length);
-      console.log(rand);
-      var element = copiedArray.splice(rand, 1);
-      console.log(element);
-      newArray.push(element);
+      var randomNumber = Math.floor(Math.random() * copiedArray.length);
+      var onePicture = copiedArray.splice(randomNumber, 1);
+      sortedPictures.push(onePicture[0]);
     }
-
-    window.picture.renderPictures(newArray);
+    window.picture.renderPictures(sortedPictures);
   };
 
-  var getPopPictures = function () {
-    window.picture.renderPictures(window.picture.data);
+  var getPopularPictures = function () {
+    var sortedPictures = window.picture.data;
+    window.picture.renderPictures(sortedPictures);
   };
 
   var selectedElement = filterPopular;
-
   var setButtonColor = function (activeElement) {
     selectedElement.classList.remove('img-filters__button--active');
     selectedElement = activeElement;
@@ -41,18 +35,25 @@
 
 
   filterForm.addEventListener('click', function (evt) {
+    var pictures = document.querySelectorAll('.picture');
 
+    var array = Array.from(pictures);
+    for (var i = 0; i < array.length; i++) {
+      array[i].remove();
+    }
     setButtonColor(evt.target);
     switch (evt.target.id) {
       case 'filter-discussed':
-        window.debounce(getDiscPictures);
+        window.debounce(getDiscussedPictures);
         break;
       case 'filter-new' :
-        window.debounce(getTenPictures);
+        window.debounce(getNewPictures);
         break;
       case 'filter-popular' :
-        window.debounce(getPopPictures);
+        window.debounce(getPopularPictures);
         break;
     }
   });
 })();
+
+
