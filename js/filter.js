@@ -11,7 +11,6 @@
   };
 
   var getNewPictures = function () {
-    debugger
     var copiedArray = window.picture.data.slice();
     var sortedPictures = [];
     for (var i = 0; i < 10; i++) {
