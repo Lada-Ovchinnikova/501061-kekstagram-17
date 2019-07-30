@@ -3,9 +3,11 @@
   var imageFilters = document.querySelector('.img-filters');
 
   var onLoadSuccess = function (data) {
+
     window.picture.data = data;
     window.picture.renderPictures(data);
     imageFilters.classList.remove('img-filters--inactive');
+
   };
 
   var onLoadError = function (errorMessage) {

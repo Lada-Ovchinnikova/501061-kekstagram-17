@@ -11,6 +11,7 @@
   };
 
   var getNewPictures = function () {
+    debugger
     var copiedArray = window.picture.data.slice();
     var sortedPictures = [];
     for (var i = 0; i < 10; i++) {
@@ -37,9 +38,9 @@
   filterForm.addEventListener('click', function (evt) {
     var pictures = document.querySelectorAll('.picture');
 
-    var array = Array.from(pictures);
-    for (var i = 0; i < array.length; i++) {
-      array[i].remove();
+    window.array = Array.from(pictures);
+    for (var i = 0; i < window.array.length; i++) {
+      window.array[i].remove();
     }
     setButtonColor(evt.target);
     switch (evt.target.id) {
@@ -54,6 +55,7 @@
         break;
     }
   });
+
 })();
 
 

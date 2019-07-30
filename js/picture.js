@@ -26,5 +26,4 @@
   };
 
   window.picture.renderPictures = render;
-  // window.picture.removePictures = removePictures;
 })();
