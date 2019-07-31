@@ -14,31 +14,46 @@
     bigPicture.classList.remove('hidden');
     commentsCount.classList.add('visually-hidden');
     downladNemComments.classList.add('visually-hidden');
-    renderModal(window.picture.data[0]);
+    renderModal(window.load.gallery[0]);
   }
 
   function removeOldComments() {
     var commentBlocks = document.querySelectorAll('.social__comment');
-    listForCopies.removeChild(commentBlocks[0]);
-    listForCopies.removeChild(commentBlocks[1]);
-
+    commentBlocks.forEach(function (item) {
+      item.remove();
+    });
   }
+
 
   function renderModal(picture) {
     preview.src = picture.url;
     likes.textContent = picture.likes;
     numberOfComments.textContent = picture.comments.length;
     description.textContent = picture.description;
+
     picture.comments.forEach(function (item) {
       var comment = document.querySelector('.social__comment').cloneNode(true);
+
+      removeOldComments();
       comment.querySelector('.social__picture').src = item.avatar;
       comment.querySelector('.social__text').textContent = item.message;
       listForCopies.appendChild(comment);
     });
-    removeOldComments();
-  }
 
-  window.preview = {
-    openModal: openModal()
+  }
+  window.preview = function () {
+    openModal();
   };
+  // // window.preview = {
+  // //   openModal: openModal()
+  // // };
+  var gallery = document.querySelector('.pictures');
+  gallery.addEventListener('click', function (evt) {
+
+    var target = evt.target;
+    if (target.className !== 'picture__img') {
+      return;
+    }
+    window.preview();
+  });
 })();

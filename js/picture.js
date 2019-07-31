@@ -16,7 +16,7 @@
     return pictureElement;
   };
 
-  var render = function (data) {
+  var renderPictures = function (data) {
     // Хранит и добавляет данные из шаблона
     var takeNumber = data.length > 25 ? 25 : data.length;
 
@@ -25,5 +25,7 @@
     }
   };
 
-  window.picture.renderPictures = render;
+  window.picture = {
+    renderPictures: renderPictures
+  };
 })();

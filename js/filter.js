@@ -4,14 +4,14 @@
   var filterPopular = document.querySelector('#filter-popular');
 
   var getDiscussedPictures = function () {
-    var sortedPictures = window.picture.data.slice().sort(function (first, second) {
+    var sortedPictures = window.load.gallery.slice().sort(function (first, second) {
       return second.comments.length - first.comments.length;
     });
     window.picture.renderPictures(sortedPictures);
   };
 
   var getNewPictures = function () {
-    var copiedArray = window.picture.data.slice();
+    var copiedArray = window.load.gallery.slice();
     var sortedPictures = [];
     for (var i = 0; i < 10; i++) {
       var randomNumber = Math.floor(Math.random() * copiedArray.length);
@@ -22,8 +22,9 @@
   };
 
   var getPopularPictures = function () {
-    var sortedPictures = window.picture.data;
+    var sortedPictures = window.load.gallery;
     window.picture.renderPictures(sortedPictures);
+    // window.preview();
   };
 
   var selectedElement = filterPopular;
@@ -54,7 +55,16 @@
         break;
     }
   });
+  // var gallery = document.querySelector('.pictures');
 
+  // gallery.addEventListener('click', function (evt) {
+  //   debugger
+  //   var target = evt.target;
+  //   if (target.className !== 'picture__img') {
+  //     return;
+  //   }
+  //   window.preview[openModal];
+  // });
 })();
 
 
