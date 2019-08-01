@@ -11,12 +11,12 @@
   var downladNewComments = document.querySelector('.comments-loader');
   var bigPictureExitte = document.querySelector('.big-picture__cancel');
 
-  function openModal() {
+  function openModal(picture) {
     bigPicture.classList.remove('hidden');
     document.addEventListener('keydown', onFormEscPress);
     commentsCount.classList.add('visually-hidden');
     downladNewComments.classList.add('visually-hidden');
-    renderModal(window.load.gallery[0]);
+    renderModal(picture);
   }
 
   function removeOldComments() {
@@ -40,28 +40,11 @@
       comment.querySelector('.social__text').textContent = item.message;
       listForCopies.appendChild(comment);
     });
-
   }
-  // window.preview = function () {
-  //   openModal();
-  // };
+
   window.preview = {
     openModal: openModal
   };
-
-  var gallery = document.querySelector('.pictures');
-  gallery.addEventListener('click', function (evt) {
-
-    var target = evt.target;
-
-    // цикл двигается вверх от target к родителям до table
-    while (target !== gallery) {
-      if (target.className === 'picture') {
-        window.preview.openModal();
-      }
-      target = target.parentNode;
-    }
-  });
 
   var onFormEscPress = function (evt) {
     window.util.isEscEvent(evt, closeForm);
