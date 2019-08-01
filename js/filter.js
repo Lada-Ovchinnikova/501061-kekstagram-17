@@ -34,7 +34,6 @@
     selectedElement.classList.add('img-filters__button--active');
   };
 
-
   filterForm.addEventListener('click', function (evt) {
     var pictures = document.querySelectorAll('.picture');
 
@@ -55,16 +54,6 @@
         break;
     }
   });
-  // var gallery = document.querySelector('.pictures');
-
-  // gallery.addEventListener('click', function (evt) {
-  //   debugger
-  //   var target = evt.target;
-  //   if (target.className !== 'picture__img') {
-  //     return;
-  //   }
-  //   window.preview[openModal];
-  // });
 })();
 
 

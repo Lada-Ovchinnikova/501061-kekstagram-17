@@ -7,6 +7,7 @@
     var gallery = data;
     window.picture.renderPictures(data);
     imageFilters.classList.remove('img-filters--inactive');
+
     window.load = {
       gallery: gallery
     };
