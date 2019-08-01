@@ -3,9 +3,14 @@
   var imageFilters = document.querySelector('.img-filters');
 
   var onLoadSuccess = function (data) {
-    window.picture.data = data;
+
+    var gallery = data;
     window.picture.renderPictures(data);
     imageFilters.classList.remove('img-filters--inactive');
+
+    window.load = {
+      gallery: gallery
+    };
   };
 
   var onLoadError = function (errorMessage) {
@@ -22,4 +27,6 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
   window.data.loadPhotos(onLoadSuccess, onLoadError);
+
+
 })();
