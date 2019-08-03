@@ -8,14 +8,14 @@
   var numberOfComments = document.querySelector('.comments-count');
   var description = document.querySelector('.social__caption');
   var commentsCount = document.querySelector('.social__comment-count');
-  var downladNewComments = document.querySelector('.comments-loader');
-  var bigPictureExitte = document.querySelector('.big-picture__cancel');
+  var downloadNewComments = document.querySelector('.comments-loader');
+  var bigPictureExit = document.querySelector('.big-picture__cancel');
 
   function openModal(picture) {
     bigPicture.classList.remove('hidden');
     document.addEventListener('keydown', onFormEscPress);
     commentsCount.classList.add('visually-hidden');
-    downladNewComments.classList.add('visually-hidden');
+    downloadNewComments.classList.add('visually-hidden');
     renderModal(picture);
   }
 
@@ -51,11 +51,11 @@
   };
 
   // Обработчик  закрытия модального окна
-  bigPictureExitte.addEventListener('click', function () {
+  bigPictureExit.addEventListener('click', function () {
     closeForm();
   });
 
-  bigPictureExitte.addEventListener('keydown', function (evt) {
+  bigPictureExit.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, closeForm);
   });
 
