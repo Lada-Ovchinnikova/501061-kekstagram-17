@@ -35,83 +35,93 @@
     pictureForm.classList.add('hidden');
     document.removeEventListener('keydown', onFormEscPress);
   };
-  //
-  // // Проверяет на валидность
-  // var checkComment = function () {
-  //   if (commentText.value.length < 140) {
-  //     commentText.setCustomValidity('');
-  //     return true;
-  //   } else {
-  //     commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
-  //     commentText.style.border = 'solid 3px rgb(255, 0, 0)';
-  //     return false;
-  //   }
+  // // //
+  // // // // Проверяет на валидность
+  // // // var checkComment = function () {
+  // // //   if (commentText.value.length < 140) {
+  // // //     commentText.setCustomValidity('');
+  // // //     return true;
+  // // //   } else {
+  // // //     commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
+  // // //     commentText.style.border = 'solid 3px rgb(255, 0, 0)';
+  // // //     return false;
+  // // //   }
+  // // // };
+  // //
+// || element.length = 0
+//
+  // Проверяет на валидность
+  var check1 = function (element) {
+console.log(element.length);
+    if (element.length < 20) {
+      return {status: true};
+    } else {
+      return {status: false, error: 'Хэштег не должен превышать 20 символов (включая #);   '};
+    }
+  };
+  var check2 = function (array) {
+    if (array.length < 4) {
+      return {status: true};
+    } else {
+      return {status: false, error: 'Количество хэштегв не должно превышать 5;    '};
+    }
+  };
+
+  var check3 = function (element) {
+    if (element.length !== 1) {
+      return {status: true};
+    } else {
+      return {status: false, error: 'Хэштег не должен состоять из одного символа;   '};
+    }
+  };
+  var check4 = function (element) {
+    if (/^#/.test(element.value)) {
+      return {status: true};
+    } else {
+      return {status: false, error: 'Хэштег должен начинаться с символа #'};
+    }
+  };
+  var checkForEachElement = function () {
+  var hashtagArray = hashtag.value.split(' ');
+    check2(hashtagArray);
+    for (var i = 0; i < hashtagArray.length; i++) {
+    check1(hashtagArray[i]);
+    check3(hashtagArray[i]);
+    check4(hashtagArray[i]);
+  }
+}
+  // var check4 = function () {
+  //   var hasharray = hashtag.value.split(' ');
+  //   hasharray.forEach(function (item, index) {
+  //     for (var i = index + 1; i < hasharray.length -1; i++) {
+  //       if (hasharray[i] === item) {
+  //         return {status: false, error: 'Хэштег не должен повторяться'};
+  //       } else {
+  //         return {status: true};
+  //       }
+  //     }
+  //   });
   // };
 
-  // Проверяет на валидность
-  var check1 = function () {
-     hashtag.value.split(' ');
-    if (hashtag.value.length < 20) {
-      hashtag.setCustomValidity('');
-      return true;
-    } else {
-      hashtag.setCustomValidity('Хэштег не должен превышать 20 символов (включая #)');
-      hashtag.style.border = 'solid 3px rgb(255, 0, 0)';
-      return false;
-    }
-  };
-  var check2 = function () {
-    var hasharray = hashtag.value.split(' ');
-    if (hasharray.length < 4) {
-      hashtag.setCustomValidity('');
-      return true;
-    } else {
-      hashtag.setCustomValidity('Количество хэштегв не должно превышать 5');
-      hashtag.style.border = 'solid 3px rgb(255, 0, 0)';
-      return false;
-    }
-  };
-  var check3 = function () {
-    hashtag.value.split(' ');
-    if (hashtag.value.match(/^#/i)) {
-      hashtag.setCustomValidity('');
-      return true;
-    } else {
-      hashtag.setCustomValidity('хэштег должен начинаться с символа #');
-      // hashtag.style.border = 'solid 3px rgb(255, 0, 0)';
-      return false;
-    }
-  };
-  var check4 = function () {
-    hashtag.value.split(' ');
-    // проверятк на длину
-    if (hashtag.value.length > 2 ) {
-      hashtag.setCustomValidity('');
-      return true;
-    } else {
-      hashtag.setCustomValidity('Хэштег не должен состоять из одного символа');
-      hashtag.style.border = 'solid 3px rgb(255, 0, 0)';
-      return false;
-    }
-  };
 
   var getValidation = function () {
-    return (check1() && check2() && check3() && check4());
-  };
+    //var result = [check1(), check2()];
 
+    var error = result.map(item => {
+      if (!item.status) {
+        return item.error;
+      }
+    });
+    hashtag.setCustomValidity(error.join(''));
+    return !error.length;
+  };
   // Находит форму и кнопку отправки
   var form = document.querySelector('.img-upload__form');
   var submitButton = document.querySelector('#upload-submit');
 
-  // // // Обработчик клика по кнопке
+  // // Обработчик клика по кнопке
   submitButton.addEventListener('click', function () {
     getValidation();
-  });
-
-  form.addEventListener('submit', function (evt) {
-    if (!getValidation()) {
-      evt.preventDefault();
-    }
   });
 })();
 
