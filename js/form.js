@@ -35,6 +35,7 @@
   };
 
   // Задает значение фильтра
+
   var setFilter = null;
   effectsList.addEventListener('change', function (evt) {
     if (evt.target.value !== 'none') {
@@ -102,51 +103,5 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  });
-
-
-  // Находит элемент с комментарием
-  var commentText = document.querySelector('.text__description');
-
-  // Обработчик события фокус
-  commentText.addEventListener('focus', function () {
-    document.removeEventListener('keydown', window.modal.onFormEscPress);
-  });
-
-  // Обработчик события снятие фокуса
-  commentText.addEventListener('blur', function () {
-    document.addEventListener('keydown', window.modal.onFormEscPress);
-  });
-
-  // Проверяет на валидность
-  var checkComment = function () {
-    if (commentText.value.length < 140) {
-      commentText.setCustomValidity('');
-      return true;
-    } else {
-      commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
-      commentText.style.border = 'solid 3px rgb(255, 0, 0)';
-      return false;
-    }
-  };
-
-  var getValidation = function () {
-    return checkComment();
-  };
-
-  // Находит форму и кнопку отправки
-  var form = document.querySelector('.img-upload__form');
-  var submitButton = document.querySelector('#upload-submit');
-
-  // Обработчик клика по кнопке
-  submitButton.addEventListener('click', function () {
-    getValidation();
-  });
-
-  // Обработчик отправки формы
-  form.addEventListener('submit', function (evt) {
-    if (!getValidation()) {
-      evt.preventDefault();
-    }
   });
 })();

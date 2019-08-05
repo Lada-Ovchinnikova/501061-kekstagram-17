@@ -33,6 +33,8 @@
   // Обработчик открытия модального окна
   uploadFileButton.addEventListener('change', function () {
     openForm();
-
+  });
+  uploadFileButton.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, openForm);
   });
 })();
