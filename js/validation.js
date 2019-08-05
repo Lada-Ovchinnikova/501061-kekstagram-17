@@ -53,17 +53,10 @@
   // Проверяет на валидность
   var check1 = function (element) {
     console.log(element.length);
-    if (element.length < 20) {
+    if (element.length <= 20) {
       return {status: true};
     } else {
-      return {status: false, error: 'Хэштег не должен превышать 20 символов (включая #);   '};
-    }
-  };
-  var check2 = function (array) {
-    if (array.length < 4) {
-      return {status: true};
-    } else {
-      return {status: false, error: 'Количество хэштегв не должно превышать 5;    '};
+      return {status: false, error: 'Хэштег не должен превышать 20 символов (включая #);'};
     }
   };
 
@@ -75,7 +68,7 @@
     }
   };
   var check4 = function (element) {
-    if (/^#/.test(element.value)) {
+    if (element.value[0] === '#') {
       return {status: true};
     } else {
       return {status: false, error: 'Хэштег должен начинаться с символа #'};
@@ -83,44 +76,85 @@
   };
   var checkForEachElement = function () {
     var hashtagArray = hashtag.value.split(' ');
-    check2(hashtagArray);
+
     for (var i = 0; i < hashtagArray.length; i++) {
       check1(hashtagArray[i]);
       check3(hashtagArray[i]);
       check4(hashtagArray[i]);
+
     }
   }
-  // var check4 = function () {
-  //   var hasharray = hashtag.value.split(' ');
-  //   hasharray.forEach(function (item, index) {
-  //     for (var i = index + 1; i < hasharray.length -1; i++) {
-  //       if (hasharray[i] === item) {
-  //         return {status: false, error: 'Хэштег не должен повторяться'};
-  //       } else {
-  //         return {status: true};
-  //       }
-  //     }
-  //   });
-  // };
+  var check4 = function (hasharray) {
 
-
-  var getValidation = function () {
-    //var result = [check1(), check2()];
-
-    var error = result.map(item => {
-      if (!item.status) {
-        return item.error;
+    for(var k = 0; k < hasharray.length; k++) {
+      for (var i = k +1 ; i < hasharray.length; i++) {
+        if (hasharray[i] === hasharray[k]) {
+          return {status: false, error: 'Хэштег не должен повторяться'};
+        }
       }
-    });
-    hashtag.setCustomValidity(error.join(''));
-    return !error.length;
+    }
+
+    return {status: true}
+  };
+
+  var checkMy4 = function (hasharray) {
+    var isExists = {}
+
+    for (var i = 0; i < hasharray.length; i++) {
+      if (hasharray[hasharray[i]] === undefined) {
+        isExists[hasharray[i]] = 1// true
+      } else {
+        return {status: false, error: 'Хэштег не должен повторяться'};
+      }
+    }
+
+    return {status: false}
+  }
+
+  function validationHashtags(hashtags) {
+    var errors = []
+    for (var i = 0; i < hashtags.length; i++) {
+      var resultValidName1 = check1(hashtags[i]);
+      if(!isValidName1.status) {
+        errors.push(isValidName1.error)
+      }
+      check3(hashtags[i]);
+      check4(hashtags[i]);
+      if(errors.length) {
+        return {errors:errors, number:i}
+      }
+    }
+    return  {errors:errors, number:i}
+  }
+
+
+  var isFormValid = function () {
+    //var result = [check1(), check2()];
+    var hashtagArray = hashtag.value.split(' ');
+
+    if(hashtagArray.length>5) {
+      hashtag.setCustomValidity(',jkmit 5');
+      return false;
+    }
+
+    var resultNameValid = checkMy4()
+     if(!resultNameValid.status) {
+       hashtag.setCustomValidity('repeat ');
+       return false;
+     }
+
+    var resultValidHashtags = validationHashtags(hashtagArray);
+    hashtag.setCustomValidity(resultValidHashtags.errors.join('hashtag number:£' + (resultValidHashtags.number + 1)+ resultValidHashtags.errors.join(' ')));
+    return !resultValidHashtags.errors.length;
   };
   // Находит форму и кнопку отправки
   var form = document.querySelector('.img-upload__form');
   var submitButton = document.querySelector('#upload-submit');
 
   // // Обработчик клика по кнопке
-  submitButton.addEventListener('click', function () {
-    getValidation();
+  submitButton.addEventListener('click', function (e) {
+    if (!isFormValid()) {
+      e.preventDefault();
+    }
   });
 })();
