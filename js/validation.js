@@ -35,24 +35,20 @@
     pictureForm.classList.add('hidden');
     document.removeEventListener('keydown', onFormEscPress);
   };
-  // // //
-  // // // // Проверяет на валидность
-  // // // var checkComment = function () {
-  // // //   if (commentText.value.length < 140) {
-  // // //     commentText.setCustomValidity('');
-  // // //     return true;
-  // // //   } else {
-  // // //     commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
-  // // //     commentText.style.border = 'solid 3px rgb(255, 0, 0)';
-  // // //     return false;
-  // // //   }
-  // // // };
-  // //
-// || element.length = 0
-//
+
   // Проверяет на валидность
-  var check1 = function (element) {
-    console.log(element.length);
+  var checkComment = function () {
+    if (commentText.value.length < 140) {
+      commentText.setCustomValidity('');
+      return true;
+    } else {
+      commentText.setCustomValidity('Комментарий не должен превышать 140 символов');
+      commentText.style.border = 'solid 3px rgb(255, 0, 0)';
+      return false;
+    }
+  };
+
+  var checkHashtagMaxLength = function (element) {
     if (element.length <= 20) {
       return {status: true};
     } else {
@@ -60,101 +56,98 @@
     }
   };
 
-  var check3 = function (element) {
+  var checkHashtagMinLength = function (element) {
     if (element.length !== 1) {
       return {status: true};
     } else {
       return {status: false, error: 'Хэштег не должен состоять из одного символа;   '};
     }
   };
-  var check4 = function (element) {
-    if (element.value[0] === '#') {
+  var checkHashtagFirstElement = function (element) {
+    if (element[0] === '#' || element === '') {
       return {status: true};
     } else {
       return {status: false, error: 'Хэштег должен начинаться с символа #'};
     }
   };
-  var checkForEachElement = function () {
-    var hashtagArray = hashtag.value.split(' ');
 
-    for (var i = 0; i < hashtagArray.length; i++) {
-      check1(hashtagArray[i]);
-      check3(hashtagArray[i]);
-      check4(hashtagArray[i]);
-
-    }
-  }
-  var check4 = function (hasharray) {
-
-    for(var k = 0; k < hasharray.length; k++) {
-      for (var i = k +1 ; i < hasharray.length; i++) {
-        if (hasharray[i] === hasharray[k]) {
-          return {status: false, error: 'Хэштег не должен повторяться'};
-        }
+  var validationHashtags = function (hashtags) {
+    var errors = [];
+    var status;
+    for (var i = 0; i < hashtags.length; i++) {
+      var resultMaxLength = checkHashtagMaxLength(hashtags[i]);
+      if (!resultMaxLength.status) {
+        errors.push(resultMaxLength.error);
+      }
+      var resultMinLength = checkHashtagMinLength(hashtags[i]);
+      if (!resultMinLength.status) {
+        errors.push(resultMinLength.error);
+      }
+      var resultFirstElement = checkHashtagFirstElement(hashtags[i]);
+      if (!resultFirstElement .status) {
+        errors.push(resultFirstElement .error);
+      }
+      if (errors.length) {
+        status = {errors: errors, number: i};
+        return status;
+      } else {
+        status = {status: true};
       }
     }
-
-    return {status: true}
+    return status;
   };
 
-  var checkMy4 = function (hasharray) {
-    var isExists = {}
-
-    for (var i = 0; i < hasharray.length; i++) {
-      if (hasharray[hasharray[i]] === undefined) {
-        isExists[hasharray[i]] = 1// true
+  var checkUniqeHashtag = function (hashtagArray) {
+    var isExists = {};
+    var status;
+    for (var i = 0; i < hashtagArray.length; i++) {
+      var lowerCase = hashtagArray[i].toLocaleLowerCase();
+      if (isExists[lowerCase] === undefined) {
+        isExists[lowerCase] = 1;// true
+        status = {status: true};
       } else {
-        return {status: false, error: 'Хэштег не должен повторяться'};
+        status = {status: false};
+        return status;
       }
     }
-
-    return {status: false}
-  }
-
-  function validationHashtags(hashtags) {
-    var errors = []
-    for (var i = 0; i < hashtags.length; i++) {
-      var resultValidName1 = check1(hashtags[i]);
-      if(!isValidName1.status) {
-        errors.push(isValidName1.error)
-      }
-      check3(hashtags[i]);
-      check4(hashtags[i]);
-      if(errors.length) {
-        return {errors:errors, number:i}
-      }
-    }
-    return  {errors:errors, number:i}
-  }
-
+    return status;
+  };
 
   var isFormValid = function () {
-    //var result = [check1(), check2()];
     var hashtagArray = hashtag.value.split(' ');
-
-    if(hashtagArray.length>5) {
-      hashtag.setCustomValidity(',jkmit 5');
+    if (hashtagArray.length > 5) {
+      hashtag.setCustomValidity('Количество хэштегв не должно превышать 5;');
       return false;
     }
 
-    var resultNameValid = checkMy4()
-     if(!resultNameValid.status) {
-       hashtag.setCustomValidity('repeat ');
-       return false;
-     }
+    var resultNameValid = checkUniqeHashtag(hashtagArray);
+    if (!resultNameValid.status) {
+      hashtag.setCustomValidity('Хэштег не должен повторяться');
+      return false;
+    }
+
+    checkComment();
 
     var resultValidHashtags = validationHashtags(hashtagArray);
-    hashtag.setCustomValidity(resultValidHashtags.errors.join('hashtag number:£' + (resultValidHashtags.number + 1)+ resultValidHashtags.errors.join(' ')));
-    return !resultValidHashtags.errors.length;
+    if (resultValidHashtags.errors) {
+      hashtag.setCustomValidity((resultValidHashtags.number + 1) + 'й -' + resultValidHashtags.errors.join(''));
+      return !resultValidHashtags.errors.length;
+    } else {
+      return true;
+    }
   };
+
   // Находит форму и кнопку отправки
   var form = document.querySelector('.img-upload__form');
   var submitButton = document.querySelector('#upload-submit');
 
-  // // Обработчик клика по кнопке
-  submitButton.addEventListener('click', function (e) {
+  // Обработчик клика по кнопке
+  submitButton.addEventListener('click', function () {
+    isFormValid();
+  });
+  form.addEventListener('submit', function (evt) {
     if (!isFormValid()) {
-      e.preventDefault();
+      evt.preventDefault();
     }
   });
 })();
